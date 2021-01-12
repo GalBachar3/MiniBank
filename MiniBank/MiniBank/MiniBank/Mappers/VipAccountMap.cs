@@ -7,7 +7,7 @@ namespace MiniBank.Mappers
     {
         public VipAccountMap()
         {
-            DiscriminatorValue("VipAccount");
+            DiscriminatorValue(nameof(VipAccount));
         }
     }
 }

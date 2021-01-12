@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MiniBank.Models;
 
 namespace MiniBank.Exceptions
 {
@@ -11,5 +8,12 @@ namespace MiniBank.Exceptions
         public OverdraftException(string message) : base(message)
         {
         }
+
+        public OverdraftException(Account account) :
+            base($"Simple Account with {account.Id} id" + $" and {account.Balance} balance , can't be over drafted")
+        {
+        }
+
+
     }
 }

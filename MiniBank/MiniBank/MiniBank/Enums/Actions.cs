@@ -2,7 +2,7 @@
 {
     public enum Actions
     {
-        ListAllUsers=1,
+        ListAllUsers = 1,
         ListAllAccountsByUser,
         DepositAccount,
         WithdrawAccount,

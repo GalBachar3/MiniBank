@@ -1,4 +1,5 @@
-﻿using FluentNHibernate.Automapping;
+﻿using System.Configuration;
+using FluentNHibernate.Automapping;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using MiniBank.Models;
@@ -8,25 +9,25 @@ namespace MiniBank.NhibernateTools
 {
     public static class FluentNHibernateHelper
     {
-        public static ISession OpenSession()
-
+        public static ISession Session { get; set; }
+        
+        public static void OpenSession()
         {
             var cfg = new StoreConfiguration();
             var sessionFactory = Fluently.Configure()
                 .Database(MySQLConfiguration.Standard
-                    .ConnectionString("Server=127.0.0.1;Port=3306;Database=minibank;Uid=root;Pwd=sqlpass;"))
-                .Mappings(m =>
-                    m.AutoMappings
-                        .Add(AutoMap.AssemblyOf<User>(cfg).Override<User>(map =>
-                        {
-                            map.HasManyToMany(user => user.Accounts)
-                                .Cascade.All()
-                                .Table("usertoaccount");
-                        })))
-                .Mappings(m=>m.FluentMappings.AddFromAssemblyOf<Account>())
+                    .ConnectionString(ConfigurationSettings.AppSettings.Get("ConnectionString")))
+                .Mappings(m => m.AutoMappings
+                    .Add(AutoMap.AssemblyOf<User>(cfg)
+                    .Override<User>(map =>
+                    {
+                        map.HasManyToMany(user =>
+                            user.Accounts).Cascade.All().Table("usertoaccount");
+                    })))
+                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<Account>())
                 .BuildSessionFactory();
 
-            return sessionFactory.OpenSession();
+            Session = sessionFactory.OpenSession();
         }
     }
 }

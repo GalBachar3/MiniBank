@@ -2,7 +2,7 @@
 {
     public enum Accounts
     {
-        SimpleAccount=1,
+        SimpleAccount = 1,
         VipAccount
     }
 }

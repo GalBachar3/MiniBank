@@ -1,14 +1,21 @@
 ﻿using System;
-using MiniBank.Client;
+using System.Collections.Generic;
+using MiniBank.Models;
+using MiniBank.NhibernateTools;
+using MiniBank.Views;
 
 namespace MiniBank
 {
     public class Program
     {
-        private static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            new ApplicationRunner().Run();
-            //Console.WriteLine(typeof(MiniBank.Models.User).FullName);
+            FluentNHibernateHelper.OpenSession();
+            using (var session = FluentNHibernateHelper.Session)
+            {
+                new ApplicationRunner().Run();
+                session.Close();
+            }
         }
     }
 }

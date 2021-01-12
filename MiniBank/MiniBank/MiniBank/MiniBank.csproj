@@ -116,17 +116,18 @@
     <Compile Include="Exceptions\CancelException.cs" />
     <Compile Include="Factories\AccountControllerFactory.cs" />
     <Compile Include="Factories\AccountFactory.cs" />
-    <Compile Include="Client\UserAction.cs" />
-    <Compile Include="Client\ApplicationRunner.cs" />
+    <Compile Include="Views\UserAction.cs" />
+    <Compile Include="Views\ApplicationRunner.cs" />
     <Compile Include="Mappers\AccountMap.cs" />
-    <Compile Include="Controllers\Account.cs" />
-    <Compile Include="Controllers\SimpleAccount.cs" />
-    <Compile Include="Controllers\User.cs" />
-    <Compile Include="Controllers\VipAccount.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\SimpleAccountController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\VipAccountController.cs" />
     <Compile Include="Exceptions\OverdraftException.cs" />
-    <Compile Include="Client\Menu.cs" />
+    <Compile Include="Views\Menu.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Mappers\SimpleAccountMap.cs" />
+    <Compile Include="Models\BasicEntity.cs" />
     <Compile Include="NhibernateTools\FluentNHibernateHelper.cs" />
     <Compile Include="Resources\MenuMessages.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -139,10 +140,8 @@
     <Compile Include="Models\SimpleAccount.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\VipAccount.cs" />
-    <Compile Include="Views\Account.cs" />
-    <Compile Include="Views\SimpleAccount.cs" />
-    <Compile Include="Views\User.cs" />
-    <Compile Include="Views\VipAccount.cs" />
+    <Compile Include="Views\AccountView.cs" />
+    <Compile Include="Views\UserView.cs" />
     <Compile Include="Mappers\VipAccountMap.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -61,6 +61,15 @@ namespace MiniBank.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The {0} {1} has {2} balance .
+        /// </summary>
+        public static string AccountDetails {
+            get {
+                return ResourceManager.GetString("AccountDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to the account is not found, please try again.
         /// </summary>
         public static string AccountNotFoundMessage {
@@ -99,6 +108,15 @@ namespace MiniBank.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Any time you want to cancel – input &apos;c&apos;.
+        /// </summary>
+        public static string CancelMessage {
+            get {
+                return ResourceManager.GetString("CancelMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to c.
         /// </summary>
         public static string CancelValue {
@@ -133,12 +151,29 @@ namespace MiniBank.Resources {
         ///5-Create a new user  
         ///6-Create a new account for a user
         ///7-Delete users and accounts
-        ///8-Exit
-        ///Any time you want to cancel – input &apos;c&apos;.
+        ///8-Exit.
         /// </summary>
         public static string MenuOptions {
             get {
                 return ResourceManager.GetString("MenuOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to there are not accounts for this user yet.
+        /// </summary>
+        public static string NoAccountsExistMessage {
+            get {
+                return ResourceManager.GetString("NoAccountsExistMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to there are not users in the bank yet.
+        /// </summary>
+        public static string NoUsersExistMessage {
+            get {
+                return ResourceManager.GetString("NoUsersExistMessage", resourceCulture);
             }
         }
         
@@ -179,11 +214,11 @@ namespace MiniBank.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The simple account {0} has {1} balance .
+        ///   Looks up a localized string similar to the action was executed successfully.
         /// </summary>
-        public static string SimpleAccountDetails {
+        public static string SuccessMessage {
             get {
-                return ResourceManager.GetString("SimpleAccountDetails", resourceCulture);
+                return ResourceManager.GetString("SuccessMessage", resourceCulture);
             }
         }
         
@@ -202,15 +237,6 @@ namespace MiniBank.Resources {
         public static string UserNotFoundMessage {
             get {
                 return ResourceManager.GetString("UserNotFoundMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The vip account {0} has {1} balance .
-        /// </summary>
-        public static string VipAccountDetails {
-            get {
-                return ResourceManager.GetString("VipAccountDetails", resourceCulture);
             }
         }
     }

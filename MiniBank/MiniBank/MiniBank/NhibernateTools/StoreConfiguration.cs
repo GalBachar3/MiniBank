@@ -1,5 +1,6 @@
 ﻿using System;
 using FluentNHibernate.Automapping;
+using MiniBank.Models;
 
 namespace MiniBank.NhibernateTools
 {
@@ -7,7 +8,7 @@ namespace MiniBank.NhibernateTools
     {
         public override bool ShouldMap(Type type)
         {
-            return type.FullName == "MiniBank.Models.User";
+            return type.FullName == typeof(User).FullName;
         }
     }
 }

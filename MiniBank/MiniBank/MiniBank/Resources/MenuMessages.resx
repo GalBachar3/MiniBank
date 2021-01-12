@@ -145,8 +145,7 @@
 5-Create a new user  
 6-Create a new account for a user
 7-Delete users and accounts
-8-Exit
-Any time you want to cancel – input 'c'</value>
+8-Exit</value>
   </data>
   <data name="ReadAccountIdMessage" xml:space="preserve">
     <value>Enter the id of the account please</value>
@@ -163,16 +162,25 @@ Any time you want to cancel – input 'c'</value>
   <data name="UserNotFoundMessage" xml:space="preserve">
     <value>the user is not found, please try again</value>
   </data>
-  <data name="VipAccountDetails" xml:space="preserve">
-    <value>The vip account {0} has {1} balance </value>
-  </data>
-  <data name="SimpleAccountDetails" xml:space="preserve">
-    <value>The simple account {0} has {1} balance </value>
+  <data name="AccountDetails" xml:space="preserve">
+    <value>The {0} {1} has {2} balance </value>
   </data>
   <data name="UserDetails" xml:space="preserve">
     <value>The name of user {0} is {1}</value>
   </data>
+  <data name="CancelMessage" xml:space="preserve">
+    <value>Any time you want to cancel – input 'c'</value>
+  </data>
   <data name="CancelValue" xml:space="preserve">
     <value>c</value>
+  </data>
+  <data name="NoAccountsExistMessage" xml:space="preserve">
+    <value>there are not accounts for this user yet</value>
+  </data>
+  <data name="NoUsersExistMessage" xml:space="preserve">
+    <value>there are not users in the bank yet</value>
+  </data>
+  <data name="SuccessMessage" xml:space="preserve">
+    <value>the action was executed successfully</value>
   </data>
 </root>

@@ -4,37 +4,40 @@ using System.Resources;
 using MiniBank.Exceptions;
 using MiniBank.Resources;
 
-namespace MiniBank.Client
+namespace MiniBank.Views
 {
     public class Menu
     {
         public ResourceManager ResourceManager { get; set; }
+        public string Input { get; set; }
 
         public Menu()
         {
-            ResourceManager = new ResourceManager("MiniBank.Resources.MenuMessages", Assembly.GetExecutingAssembly());
+            ResourceManager = new ResourceManager(
+                "MiniBank.Resources.MenuMessages", Assembly.GetExecutingAssembly());
         }
 
-        public int GetInputWithMessage(string valueName)
+        public int GetIntInput(string menuMessagesValueName)
         {
-            PrintMessageFromMenuMessages(valueName);
+            Console.WriteLine(ResourceManager.GetString(menuMessagesValueName));
 
             return ReadIntInput();
         }
 
-        public int ReadIntInput()
+        private int ReadIntInput()
         {
             try
             {
-                return int.Parse(ReadInput());
+                ReadInput();
+                return int.Parse(Input);
             }
             catch (FormatException)
             {
-                return GetInputWithMessage("ErrorInputMessage");
+                return GetIntInput("ErrorInputMessage");
             }
             catch (OverflowException)
             {
-                return GetInputWithMessage("ErrorInputMessage");
+                return GetIntInput("ErrorInputMessage");
             }
         }
 
@@ -44,7 +47,8 @@ namespace MiniBank.Client
 
             try
             {
-                var sum = double.Parse(ReadInput());
+                ReadInput();
+                var sum = double.Parse(Input);
 
                 if (sum >= 0)
                 {
@@ -67,31 +71,26 @@ namespace MiniBank.Client
 
                 return GetSum();
             }
-
         }
 
         public string GetName()
         {
             Console.WriteLine(MenuMessages.ReadUserNameMessage);
-
-            return ReadInput();
+            ReadInput();
+            
+            return Input;
         }
 
-        public void PrintMessageFromMenuMessages(string valueName)
-        {
-            Console.WriteLine(ResourceManager.GetString(valueName));
-        }
-
-        public string ReadInput()
+        public void ReadInput()
         {
             var input = Console.ReadLine();
 
-            if (input != MenuMessages.CancelValue)
+            if (input == MenuMessages.CancelValue)
             {
-                return input;
+                throw new CancelException();
             }
 
-            throw new CancelException();
+            Input = input;
         }
     }
 }
