@@ -1,96 +1,43 @@
 ﻿using System;
-using System.Reflection;
-using System.Resources;
+using MiniBank.Enums;
 using MiniBank.Exceptions;
+using MiniBank.MenuViewHelpers;
 using MiniBank.Resources;
 
 namespace MiniBank.Views
 {
     public class Menu
     {
-        public ResourceManager ResourceManager { get; set; }
-        public string Input { get; set; }
+        public InputOutput Io { get; set; }
+        public UserAction ActionExecuter { get; set; }
 
         public Menu()
         {
-            ResourceManager = new ResourceManager(
-                "MiniBank.Resources.MenuMessages", Assembly.GetExecutingAssembly());
+            Io = new InputOutput();
+            ActionExecuter = new UserAction(Io);
         }
 
-        public int GetIntInput(string menuMessagesValueName)
+        public void Run()
         {
-            Console.WriteLine(ResourceManager.GetString(menuMessagesValueName));
-
-            return ReadIntInput();
-        }
-
-        private int ReadIntInput()
-        {
-            try
-            {
-                ReadInput();
-                return int.Parse(Input);
-            }
-            catch (FormatException)
-            {
-                return GetIntInput("ErrorInputMessage");
-            }
-            catch (OverflowException)
-            {
-                return GetIntInput("ErrorInputMessage");
-            }
-        }
-
-        public double GetSum()
-        {
-            Console.WriteLine(MenuMessages.ReadSumMessage);
+            Console.WriteLine(MenuMessages.CancelMessage);
 
             try
             {
-                ReadInput();
-                var sum = double.Parse(Input);
+                var choice = Io.GetIntInput("MenuOptions");
 
-                if (sum >= 0)
+                while (true)
                 {
-                    return sum;
+                    var action = (Actions) choice;
+
+                    ActionExecuter.ExecuteAction(action);
+
+                    choice = Io.GetIntInput("MenuOptions");
                 }
-
-                Console.WriteLine(MenuMessages.InvalidSumMessage);
-
-                return GetSum();
             }
-            catch (OverflowException)
+            catch (CancelException)
             {
-                Console.WriteLine(MenuMessages.ErrorInputMessage);
-
-                return GetSum();
+                return;
             }
-            catch (FormatException)
-            {
-                Console.WriteLine(MenuMessages.ErrorInputMessage);
-
-                return GetSum();
-            }
-        }
-
-        public string GetName()
-        {
-            Console.WriteLine(MenuMessages.ReadUserNameMessage);
-            ReadInput();
-            
-            return Input;
-        }
-
-        public void ReadInput()
-        {
-            var input = Console.ReadLine();
-
-            if (input == MenuMessages.CancelValue)
-            {
-                throw new CancelException();
-            }
-
-            Input = input;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using MiniBank.Factories;
+﻿using MiniBank.Exceptions;
 using MiniBank.Models;
 using MiniBank.NhibernateTools;
 using NHibernate;
@@ -10,17 +10,48 @@ namespace MiniBank.Controllers
         protected ISession Session { get; }
 
         public AccountController()
-        { 
+        {
             Session = FluentNHibernateHelper.Session;
         }
 
-        public virtual void Withdraw(Account account,double sum)
+        public void Withdraw(Account account, double sum)
         {
-            new AccountControllerFactory()
-                .GetAccountController(account.GetType()).Withdraw(account,sum);
+            if (account.GetType() == typeof(SimpleAccount))
+            {
+                WithdrawSimpleAccount(account, sum);
+            }
+            else
+            {
+                WithdrawVipAccount(account, sum);
+            }
         }
 
-        public void Deposit(Account account,double sum)
+        public void WithdrawSimpleAccount(Account account, double sum)
+        {
+            if (account.Balance - sum < 0)
+            {
+                throw new OverdraftException(account);
+            }
+
+            using (var transaction = Session.BeginTransaction())
+            {
+                account.Balance -= sum;
+                Session.Update(account);
+                transaction.Commit();
+            }
+        }
+
+        public void WithdrawVipAccount(Account account, double sum)
+        {
+            using (var transaction = Session.BeginTransaction())
+            {
+                account.Balance -= sum;
+                Session.Update(account);
+                transaction.Commit();
+            }
+        }
+
+        public void Deposit(Account account, double sum)
         {
             using (var transaction = Session.BeginTransaction())
             {
@@ -28,21 +59,18 @@ namespace MiniBank.Controllers
                 Session.Update(account);
                 transaction.Commit();
             }
-
-                
         }
 
         public Account GetAccountById(int id)
         {
-            using (var transaction = Session.BeginTransaction())
-            {
-                var account = Session.Get<Account>(id);
-                transaction.Commit();
+            var account = Session.Get<Account>(id);
 
-                return account;
+            if (account == null)
+            {
+                throw new EntityNotFoundException("the entity is not exist in the db");
             }
 
-                
+            return account;
         }
     }
 }

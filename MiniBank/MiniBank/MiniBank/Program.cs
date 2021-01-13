@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using MiniBank.Models;
-using MiniBank.NhibernateTools;
+﻿using MiniBank.NhibernateTools;
 using MiniBank.Views;
 
 namespace MiniBank
@@ -13,7 +10,7 @@ namespace MiniBank
             FluentNHibernateHelper.OpenSession();
             using (var session = FluentNHibernateHelper.Session)
             {
-                new ApplicationRunner().Run();
+                new Menu().Run();
                 session.Close();
             }
         }

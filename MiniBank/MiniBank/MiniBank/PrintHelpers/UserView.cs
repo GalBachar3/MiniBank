@@ -4,7 +4,7 @@ using FluentNHibernate.Conventions;
 using MiniBank.Models;
 using MiniBank.Resources;
 
-namespace MiniBank.Views
+namespace MiniBank.PrintHelpers
 {
     public class UserView
     {
@@ -26,7 +26,6 @@ namespace MiniBank.Views
             {
                 Console.WriteLine(MenuMessages.NoUsersExistMessage);
             }
-            
         }
     }
 }

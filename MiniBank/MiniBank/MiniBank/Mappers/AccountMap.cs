@@ -12,8 +12,7 @@ namespace MiniBank.Mappers
             DiscriminateSubClassesOnColumn("ClassType").Not.Nullable();
             Map(account => account.Balance);
             HasManyToMany(account => account.Users)
-                .Cascade.All().Inverse()
-                .Table("usertoaccount");
+                .Cascade.All().Inverse();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace MiniBank.NhibernateTools
     public static class FluentNHibernateHelper
     {
         public static ISession Session { get; set; }
-        
+
         public static void OpenSession()
         {
             var cfg = new StoreConfiguration();
@@ -22,7 +22,7 @@ namespace MiniBank.NhibernateTools
                     .Override<User>(map =>
                     {
                         map.HasManyToMany(user =>
-                            user.Accounts).Cascade.All().Table("usertoaccount");
+                            user.Accounts).Cascade.All();
                     })))
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<Account>())
                 .BuildSessionFactory();

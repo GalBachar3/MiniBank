@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using FluentNHibernate.Conventions;
 using MiniBank.Enums;
+using MiniBank.Exceptions;
 using MiniBank.Factories;
 using MiniBank.Models;
 using MiniBank.NhibernateTools;
-using MiniBank.Resources;
 using NHibernate;
 
 namespace MiniBank.Controllers
@@ -22,19 +20,10 @@ namespace MiniBank.Controllers
 
         public List<User> GetAllUsers()
         {
-            using (var transaction = Session.BeginTransaction())
-            {
-                var users = Session.Query<User>().ToList();
+            var users = Session.Query<User>().ToList();
 
-                transaction.Commit();
-                return users;
-            }
-                
-
-            
+            return users;
         }
-
-        
 
         public void CreateNewUser(string name)
         {
@@ -49,13 +38,14 @@ namespace MiniBank.Controllers
 
         public User GetUserById(int id)
         {
-            using (var transaction = Session.BeginTransaction())
-            {
-                var user = Session.Load<User>(id);
-                transaction.Commit();
+            var user = Session.Get<User>(id);
 
-                return user;
+            if (user == null)
+            {
+                throw new EntityNotFoundException("the entity is not exist in the db");
             }
+
+            return user;
         }
 
         public List<Account> GetAccountsOfUser(int id)
@@ -63,27 +53,25 @@ namespace MiniBank.Controllers
             return GetUserById(id).Accounts.ToList();
         }
 
-        public void AddAccount(int id,Accounts enumAccountType)
+        public void AddAccount(int id, Accounts enumAccountType)
         {
             var account = new AccountFactory().GetAccount(enumAccountType);
             var user = GetUserById(id);
-            
+
             account.Users.Add(user);
             user.Accounts.Add(account);
-            
+
             using (var transaction = Session.BeginTransaction())
             {
                 Session.Update(user);
                 transaction.Commit();
             }
-
-               
         }
 
         public void DeleteAllUsers()
         {
             var users = GetAllUsers();
-            
+
             using (var transaction = Session.BeginTransaction())
             {
                 foreach (var user in users)

@@ -4,21 +4,19 @@ using MiniBank.Controllers;
 using MiniBank.Enums;
 using MiniBank.Exceptions;
 using MiniBank.Models;
+using MiniBank.PrintHelpers;
 using MiniBank.Resources;
-using NHibernate;
 
-namespace MiniBank.Views
+namespace MiniBank.MenuViewHelpers
 {
     public class UserAction
     {
-        private Dictionary<Actions, Action> UserActions { get; set; }
+        private Dictionary<Actions, Action> UserActions { get; }
         public UserController UserController { get; set; }
         public AccountController AccountController { get; set; }
-        public AccountView AccountView { get; set; }
-        public UserView UserView { get; set; }
-        public Menu Menu { get; set; }
+        public InputOutput Io { get; set; }
 
-        public UserAction(Menu menu)
+        public UserAction(InputOutput menu)
         {
             UserActions = new Dictionary<Actions, Action>
             {
@@ -29,14 +27,12 @@ namespace MiniBank.Views
                 {Actions.CreateNewUser, CreateNewUser},
                 {Actions.CreateNewAccountForUser, CreateNewAccount},
                 {Actions.DeleteAllUsersAndAccounts, DeleteAllUsersAndAccounts},
-                {Actions.Exit, ()=>Environment.Exit(0)}
+                {Actions.Exit, () => Environment.Exit(0)}
             };
 
-            Menu = menu;
+            Io = menu;
             UserController = new UserController();
-            UserView = new UserView();
             AccountController = new AccountController();
-            AccountView = new AccountView();
         }
 
         public void ExecuteAction(Actions action)
@@ -49,64 +45,52 @@ namespace MiniBank.Views
             {
                 Console.WriteLine(MenuMessages.ActionNotExistMessage);
             }
+            catch (CancelException)
+            {
+                return;
+            }
         }
 
         private void PrintAllUsers()
         {
             var users = UserController.GetAllUsers();
-            
-            UserView.PrintAllUsers(users);
+
+            new UserView().PrintAllUsers(users);
         }
 
         private void PrintAccountsOfUser()
         {
             var validInput = false;
-            
+
             while (!validInput)
             {
                 try
                 {
-                    var userId = Menu.GetIntInput("ReadUserIdMessage");
+                    var userId = Io.GetIntInput("ReadUserIdMessage");
                     var accounts = UserController.GetAccountsOfUser(userId);
 
-                    AccountView.PrintAllAccounts(accounts);
+                    new AccountView().PrintAllAccounts(accounts);
                     validInput = true;
                 }
-                catch (ObjectNotFoundException)
+                catch (EntityNotFoundException)
                 {
                     Console.WriteLine(MenuMessages.UserNotFoundMessage);
                 }
-                catch (CancelException)
-                {
-                    return;
-                }
             }
-            
         }
 
         private void DepositAccount()
         {
-            try
-            {
-                AccountController.Deposit(GetAccount(), Menu.GetSum());
-                Console.WriteLine(MenuMessages.SuccessMessage);
-            }
-            catch (CancelException)
-            {
-                return;
-            }
+            AccountController.Deposit(GetAccount(), Io.GetSum());
+            Console.WriteLine(MenuMessages.SuccessMessage);
         }
 
         private void WithdrawAccount()
         {
             try
             {
-                AccountController.Withdraw(GetAccount(), Menu.GetSum());
+                AccountController.Withdraw(GetAccount(), Io.GetSum());
                 Console.WriteLine(MenuMessages.SuccessMessage);
-            }
-            catch (CancelException)
-            {
-                return;
             }
             catch (OverdraftException exception)
             {
@@ -116,17 +100,16 @@ namespace MiniBank.Views
 
         private Account GetAccount()
         {
-            var validInput = false;
             Account account = null;
-
-            while (!validInput)
+            
+            while (account == null)
             {
                 try
                 {
-                    account = AccountController.GetAccountById(Menu.GetIntInput("ReadAccountIdMessage"));
-                    validInput = true;
+                    account = AccountController
+                        .GetAccountById(Io.GetIntInput("ReadAccountIdMessage"));
                 }
-                catch (NullReferenceException)
+                catch (EntityNotFoundException)
                 {
                     Console.WriteLine(MenuMessages.AccountNotFoundMessage);
                 }
@@ -137,15 +120,8 @@ namespace MiniBank.Views
 
         private void CreateNewUser()
         {
-            try
-            {
-                UserController.CreateNewUser(Menu.GetName());
-                Console.WriteLine(MenuMessages.SuccessMessage);
-            }
-            catch (CancelException)
-            {
-                return;
-            }
+            UserController.CreateNewUser(Io.GetName());
+            Console.WriteLine(MenuMessages.SuccessMessage);
         }
 
         private void CreateNewAccount()
@@ -156,28 +132,22 @@ namespace MiniBank.Views
             {
                 try
                 {
-                    var userId = Menu.GetIntInput("ReadUserIdMessage");
-                    var enumAccountType = (Accounts)Menu
-                        .GetIntInput("AccountTypeOptions");
+                    var userId = Io.GetIntInput("ReadUserIdMessage");
+                    var enumAccountType = (Accounts) Io.GetIntInput("AccountTypeOptions");
 
                     UserController.AddAccount(userId, enumAccountType);
                     Console.WriteLine(MenuMessages.SuccessMessage);
                     validInput = true;
                 }
-                catch (KeyNotFoundException)
+                catch (AccountTypeNotExistException)
                 {
                     Console.WriteLine(MenuMessages.AccountTypeNotExist);
                 }
-                catch (ObjectNotFoundException)
+                catch (EntityNotFoundException)
                 {
                     Console.WriteLine(MenuMessages.UserNotFoundMessage);
                 }
-                catch (CancelException)
-                {
-                    return;
-                }
             }
-            
         }
 
         private void DeleteAllUsersAndAccounts()

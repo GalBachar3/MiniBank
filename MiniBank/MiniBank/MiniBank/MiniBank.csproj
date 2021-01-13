@@ -113,18 +113,17 @@
   <ItemGroup>
     <Compile Include="Enums\Accounts.cs" />
     <Compile Include="Enums\Actions.cs" />
+    <Compile Include="Exceptions\AccountTypeNotExistException.cs" />
     <Compile Include="Exceptions\CancelException.cs" />
-    <Compile Include="Factories\AccountControllerFactory.cs" />
+    <Compile Include="Exceptions\EntityNotFoundException.cs" />
     <Compile Include="Factories\AccountFactory.cs" />
-    <Compile Include="Views\UserAction.cs" />
-    <Compile Include="Views\ApplicationRunner.cs" />
+    <Compile Include="MenuViewHelpers\UserAction.cs" />
+    <Compile Include="Views\Menu.cs" />
     <Compile Include="Mappers\AccountMap.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\SimpleAccountController.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="Controllers\VipAccountController.cs" />
     <Compile Include="Exceptions\OverdraftException.cs" />
-    <Compile Include="Views\Menu.cs" />
+    <Compile Include="MenuViewHelpers\InputOutput.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Mappers\SimpleAccountMap.cs" />
     <Compile Include="Models\BasicEntity.cs" />
@@ -140,8 +139,8 @@
     <Compile Include="Models\SimpleAccount.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\VipAccount.cs" />
-    <Compile Include="Views\AccountView.cs" />
-    <Compile Include="Views\UserView.cs" />
+    <Compile Include="PrintHelpers\AccountView.cs" />
+    <Compile Include="PrintHelpers\UserView.cs" />
     <Compile Include="Mappers\VipAccountMap.cs" />
   </ItemGroup>
   <ItemGroup>

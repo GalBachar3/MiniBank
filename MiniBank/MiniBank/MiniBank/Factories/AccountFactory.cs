@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MiniBank.Enums;
+using MiniBank.Exceptions;
 using MiniBank.Models;
 
 namespace MiniBank.Factories
@@ -20,7 +21,14 @@ namespace MiniBank.Factories
 
         public Account GetAccount(Accounts type)
         {
-            return AccountsCtor[type]();
+            try
+            {
+                return AccountsCtor[type]();
+            }
+            catch (KeyNotFoundException exception)
+            {
+                throw new AccountTypeNotExistException(exception.Message);
+            }
         }
     }
 }
