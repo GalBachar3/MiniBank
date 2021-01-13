@@ -29,10 +29,9 @@ namespace MiniBank.Controllers
         {
             var user = new User {Name = name};
 
-            using (var transaction = Session.BeginTransaction())
+            using (var transaction = new TransactionHelper { Transaction = Session.BeginTransaction() })
             {
                 Session.Save(user);
-                transaction.Commit();
             }
         }
 
@@ -61,10 +60,9 @@ namespace MiniBank.Controllers
             account.Users.Add(user);
             user.Accounts.Add(account);
 
-            using (var transaction = Session.BeginTransaction())
+            using (var transaction = new TransactionHelper { Transaction = Session.BeginTransaction() })
             {
                 Session.Update(user);
-                transaction.Commit();
             }
         }
 
@@ -72,14 +70,12 @@ namespace MiniBank.Controllers
         {
             var users = GetAllUsers();
 
-            using (var transaction = Session.BeginTransaction())
+            using (var transaction = new TransactionHelper { Transaction = Session.BeginTransaction() })
             {
                 foreach (var user in users)
                 {
                     Session.Delete(user);
                 }
-
-                transaction.Commit();
             }
         }
     }

@@ -33,31 +33,28 @@ namespace MiniBank.Controllers
                 throw new OverdraftException(account);
             }
 
-            using (var transaction = Session.BeginTransaction())
+            using (var transaction = new TransactionHelper { Transaction = Session.BeginTransaction() })
             {
                 account.Balance -= sum;
                 Session.Update(account);
-                transaction.Commit();
             }
         }
 
         public void WithdrawVipAccount(Account account, double sum)
         {
-            using (var transaction = Session.BeginTransaction())
+            using (var transaction = new TransactionHelper { Transaction = Session.BeginTransaction() })
             {
                 account.Balance -= sum;
                 Session.Update(account);
-                transaction.Commit();
             }
         }
 
         public void Deposit(Account account, double sum)
         {
-            using (var transaction = Session.BeginTransaction())
+            using (var transaction = new TransactionHelper{Transaction = Session.BeginTransaction()})
             {
                 account.Balance += sum;
                 Session.Update(account);
-                transaction.Commit();
             }
         }
 
